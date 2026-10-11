@@ -154,7 +154,11 @@
 
               <div id="posture-status-card" class="posture-status-card">
                 <div id="status-indicator" class="status-indicator"></div>
-                <div><span id="posture-state">Ready</span><small id="posture-hint">Start a session for your live posture reading.</small></div>
+                <div>
+                  <span id="posture-state">Ready</span>
+                  <small id="posture-hint">Start a session for your live posture reading.</small>
+                  <small id="analysis-method">Math-based fallback · MLP not trained yet</small>
+                </div>
               </div>
 
               <div class="reading-row">
@@ -179,17 +183,17 @@
 
             <article id="samples-card" class="card samples-card">
               <div class="samples-heading">
-                <div><div class="section-kicker">PERSONAL MODEL</div><h2>Teach your posture</h2></div>
+                <div><div class="section-kicker">PERSONAL MODEL</div><h2>Personal MLP samples</h2></div>
                 <span class="sample-spark" aria-hidden="true">✳</span>
               </div>
-              <p class="samples-copy">Optional: label a few moments to help your personal posture model learn your study setup.</p>
+              <p class="samples-copy">Optional: label live pose measurements for a personal MLP experiment. The imported KNN stays primary.</p>
               <div class="sample-buttons" aria-label="Label current posture">
                 <button class="sample-button sample-good" data-label="Good" type="button" disabled><span>●</span> Good <strong id="count-good">0</strong></button>
                 <button class="sample-button sample-slouch" data-label="Slouching" type="button" disabled><span>●</span> Slouching <strong id="count-slouching">0</strong></button>
                 <button class="sample-button sample-lean" data-label="Leaning" type="button" disabled><span>●</span> Leaning <strong id="count-leaning">0</strong></button>
               </div>
               <div id="model-status" class="model-status"><span class="model-status-dot"></span><span>Capture at least 10 of each label across two sessions.</span></div>
-              <button id="train-button" class="train-button" type="button" disabled>Train my posture model <span aria-hidden="true">↗</span></button>
+              <button id="train-button" class="train-button" type="button" disabled>Train personal MLP <span aria-hidden="true">↗</span></button>
             </article>
           </div>
         </section>

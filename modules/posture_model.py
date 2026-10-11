@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import TypeAlias
 
+from .posture import signed_angle_delta
+
 
 LABELS = ("Good", "Slouching", "Leaning")
 FEATURE_COUNT = 4
@@ -105,7 +107,7 @@ class PostureSampleStore:
                 """
             ).fetchall()
         return [
-            ((neck, proximity, tilt, offset), label, session_id)
+            ((neck, proximity, signed_angle_delta(tilt, 0.0), offset), label, session_id)
             for neck, proximity, tilt, offset, label, session_id in rows
         ]
 

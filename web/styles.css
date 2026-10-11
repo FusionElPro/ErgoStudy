@@ -193,6 +193,7 @@ h2 { margin: 5px 0 0; font-family: "Segoe UI", Arial, sans-serif; font-size: 16p
 .posture-status-card > div:last-child { min-width: 0; }
 .posture-status-card #posture-state { display: block; color: #52574e; font-size: 10px; font-weight: 700; }
 .posture-status-card small { display: block; overflow: hidden; margin-top: 3px; color: #96988f; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.posture-status-card #analysis-method { color: #798773; font-size: 7px; white-space: normal; }
 .reading-row { display: flex; align-items: center; margin-top: 15px; padding: 0 2px 13px; border-bottom: 1px solid #eff0eb; }
 .reading { display: grid; flex: 1; gap: 6px; }
 .reading-label { color: #a0a198; font-size: 7px; font-weight: 700; }

@@ -22,6 +22,7 @@ from modules.posture_model import (
     PostureSampleStore,
     train_posture_classifier,
 )
+from modules.posture_knn import DEFAULT_KNN_MODEL_PATH
 
 
 ROOT = Path(__file__).resolve().parent
@@ -54,9 +55,11 @@ class StudyState:
         self,
         database_path: Path = DATABASE_PATH,
         model_path: Path = DEFAULT_MODEL_PATH,
+        knn_model_path: Path = DEFAULT_KNN_MODEL_PATH,
     ) -> None:
         self.database_path = database_path
         self.model_path = model_path
+        self.knn_model_path = knn_model_path
         self.sample_store = PostureSampleStore(database_path)
         self._lock = threading.RLock()
         self._analyzer: PostureAnalyzer | None = None
@@ -82,6 +85,8 @@ class StudyState:
             "calibrated": False,
             "valid": False,
             "classifier_used": False,
+            "classifier_name": None,
+            "rule_status": None,
         }
 
     def status(self) -> dict[str, object]:
@@ -92,8 +97,12 @@ class StudyState:
                 if self._analyzer is not None
                 else 0.0
             )
+            knn_available = self.knn_model_path.is_file()
+            mlp_available = self.model_path.is_file()
             return {
                 "active": self._analyzer is not None,
+                "model_available": knn_available or mlp_available,
+                "model_name": "KNN" if knn_available else "MLP" if mlp_available else None,
                 "elapsed_seconds": elapsed,
                 "frame_count": self._frame_count,
                 "metrics": dict(self._metrics),
@@ -105,7 +114,7 @@ class StudyState:
         with self._lock:
             if self._analyzer is not None:
                 raise ValueError("A study session is already running.")
-            analyzer = PostureAnalyzer(self.model_path)
+            analyzer = PostureAnalyzer(self.model_path, self.knn_model_path)
             try:
                 alerts = AlertManager()
             except Exception:
@@ -153,6 +162,8 @@ class StudyState:
                 "calibrated": posture.calibrated,
                 "valid": posture.valid,
                 "classifier_used": posture.classifier_used,
+                "rule_status": posture.rule_status,
+                "classifier_name": posture.classifier_name,
             }
             self._current_features = posture.features
             result = self.status()
@@ -180,7 +191,7 @@ class StudyState:
         with self._lock:
             if self._analyzer is None:
                 raise ValueError("Start a study session before recalibrating.")
-            analyzer = PostureAnalyzer(self.model_path)
+            analyzer = PostureAnalyzer(self.model_path, self.knn_model_path)
             previous = self._analyzer
             self._analyzer = analyzer
             previous.close()

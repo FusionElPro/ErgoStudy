@@ -8,7 +8,7 @@ const elements = Object.fromEntries(
     "tracking-label", "camera-alert", "camera-clock", "start-button",
     "stop-button", "calibrate-button", "app-message", "posture-status-card",
     "posture-state", "posture-hint", "neck-angle", "distance-ratio",
-    "standard-label", "standard-fill", "coach-message", "count-good",
+    "standard-label", "standard-fill", "coach-message", "analysis-method", "count-good",
     "count-slouching", "count-leaning", "model-status", "train-button",
   ].map((id) => [id, document.getElementById(id)]),
 );
@@ -162,21 +162,26 @@ function updateModelStatus(result = {}) {
   const modelStatus = elements["model-status"];
   modelStatus.classList.remove("error", "ready");
   if (result.active) {
-    modelStatus.querySelector("span:last-child").textContent =
-      "Finish your session before training the posture model.";
+    modelStatus.classList.toggle("ready", Boolean(result.metrics?.classifier_used));
+    modelStatus.querySelector("span:last-child").textContent = result.metrics?.classifier_used
+      ? `${result.metrics.classifier_name || "Classifier"} is primary; math-based posture rules are the secondary check.`
+      : "Finish your session before training the posture model.";
     elements["train-button"].disabled = true;
     return;
   }
   const enoughSamples = LABELS.every((label) => currentSampleCounts[label] >= 10);
   elements["train-button"].disabled = !enoughSamples;
-  modelStatus.querySelector("span:last-child").textContent = enoughSamples
-    ? "Ready to train. Samples must include at least two separate sessions per label."
-    : "Capture at least 10 of each label across two sessions.";
-  if (result.metrics?.classifier_used) modelStatus.classList.add("ready");
+  modelStatus.classList.toggle("ready", Boolean(result.model_available));
+  modelStatus.querySelector("span:last-child").textContent = result.model_available
+    ? `${result.model_name || "Trained classifier"} leads new sessions; math-based posture rules are the secondary check.`
+    : enoughSamples
+      ? "Ready to train. Samples must include at least two separate sessions per label."
+      : "Capture at least 10 of each label across two sessions.";
 }
 
-function updatePosture(metrics = {}, alerts = []) {
+function updatePosture(metrics = {}, alerts = [], modelName = null) {
   const status = metrics.status || "Ready";
+  const availableModel = modelName || metrics.classifier_name;
   if (!["Slouching", "Leaning"].includes(status)) {
     lastSpokenPosture = null;
   }
@@ -184,6 +189,13 @@ function updatePosture(metrics = {}, alerts = []) {
   elements["posture-state"].textContent =
     metrics.classifier_used ? `${status} · MLP` : status;
   elements["posture-hint"].textContent = hint;
+  elements["analysis-method"].textContent = !metrics.calibrated
+    ? availableModel
+      ? `Trained ${availableModel} ready · baseline calibration needed`
+      : "Calibrating baseline · math fallback active"
+    : metrics.classifier_used
+      ? `${metrics.classifier_name || "Classifier"} primary · Math check: ${metrics.rule_status || "unavailable"}`
+      : "Math-based fallback · no trained model available";
   elements["coach-message"].textContent = title === "Looking comfortable"
     ? COACHING.Good[1]
     : hint;
@@ -224,7 +236,7 @@ function updateStatus(result = {}) {
   elements["stop-button"].hidden = !backendSessionActive;
   elements["calibrate-button"].disabled = !sessionActive;
   for (const button of document.querySelectorAll(".sample-button")) {
-    button.disabled = !sessionActive;
+    button.disabled = !backendSessionActive;
   }
   elements["session-status"].textContent = sessionActive
     ? "Session in progress"
@@ -245,7 +257,7 @@ function updateStatus(result = {}) {
     elements["study-time"].textContent = formatDuration(result.elapsed_seconds);
     elements["camera-clock"].textContent = formatDuration(result.elapsed_seconds);
   }
-  updatePosture(result.metrics || {}, result.alerts || []);
+  updatePosture(result.metrics || {}, result.alerts || [], result.model_name || null);
   updateSampleCounts(result.sample_counts || currentSampleCounts);
   updateModelStatus(result);
 }

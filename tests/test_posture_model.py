@@ -11,9 +11,11 @@ class PostureModelTests(unittest.TestCase):
             store = PostureSampleStore(Path(directory) / "samples.db")
             store.record((0.0, 1.0, 0.0, 0.0), "Good", "session-1")
             store.record((16.0, 1.0, 0.0, 0.0), "Slouching", "session-1")
+            store.record((0.0, 1.0, 331.0, 0.0), "Leaning", "session-1")
 
-            self.assertEqual(store.counts(), {"Good": 1, "Slouching": 1, "Leaning": 0})
-            self.assertEqual(len(store.samples()), 2)
+            self.assertEqual(store.counts(), {"Good": 1, "Slouching": 1, "Leaning": 1})
+            self.assertEqual(len(store.samples()), 3)
+            self.assertEqual(store.samples()[2][0][2], -29.0)
 
     def test_rejects_invalid_labels_and_non_finite_features(self):
         with tempfile.TemporaryDirectory() as directory:

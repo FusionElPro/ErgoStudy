@@ -14,7 +14,7 @@ from web_app import StudyState, create_handler
 
 
 class FakeAnalyzer:
-    def __init__(self, _model_path):
+    def __init__(self, _model_path, _knn_model_path=None):
         self.closed = False
 
     def process(self, _frame, _now):
@@ -31,6 +31,7 @@ class WebAppTests(unittest.TestCase):
         self.state = StudyState(
             self.database_path,
             Path(self.temporary_directory.name) / "missing-model.joblib",
+            Path(self.temporary_directory.name) / "missing-knn.joblib",
         )
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), create_handler(self.state))
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
@@ -65,6 +66,7 @@ class WebAppTests(unittest.TestCase):
         status, _, body = self.request("/api/status")
         self.assertEqual(status, 200)
         self.assertFalse(json.loads(body)["active"])
+        self.assertFalse(json.loads(body)["model_available"])
 
     def test_start_and_frame_processing_and_label_capture(self):
         with patch("web_app.PostureAnalyzer", FakeAnalyzer), patch(
