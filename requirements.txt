@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+opencv-python
+mediapipe
+numpy
+=======
+opencv-python
+mediapipe
+numpy
+>>>>>>> origin/main
