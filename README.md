@@ -48,3 +48,19 @@ more than 15 consecutive frames in a poor-posture or drowsy state. Drowsiness
 is estimated from prolonged eye closure, a blink rate below 8 per minute after
 one minute of observation, or a prolonged yawn; these are heuristic signals,
 not medical assessments.
+
+## Browser study app
+
+Start the local dashboard with Python 3.12:
+
+```powershell
+.\.venv-ergo\Scripts\python.exe web_app.py
+```
+
+Open `http://127.0.0.1:8765/` if the browser does not open automatically. Allow
+camera access, select **Start session**, and sit comfortably for the five-second
+baseline calibration. The browser sends webcam frames only to the local server;
+frames are not saved. The gentle sound toggle is on by default and plays when a
+poor-posture alert persists for more than 15 consecutive frames. Press
+**Finish session** to save the summary. The original OpenCV desktop app remains
+available with `.\.venv-ergo\Scripts\python.exe main.py`.

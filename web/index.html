@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>ErgoStudy — your focus, in balance</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="ErgoStudy home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M16 4.5c-5.7 0-10.3 4.4-10.3 10 0 5.2 4.1 9.5 9.4 10v3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M16 8.5c3.6 0 6.5 2.8 6.5 6.3 0 3.3-2.6 6-5.9 6.3M16 13v3.4m-3.2-.8c0-1.8 1.4-3.2 3.2-3.2 1.8 0 3.2 1.4 3.2 3.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>ergo<span class="brand-light">study</span></span>
+        </a>
+
+        <div class="sidebar-label">YOUR SPACE</div>
+        <nav aria-label="Main navigation">
+          <a class="nav-item active" href="#study">
+            <span class="nav-icon" aria-hidden="true">◉</span>
+            Study room
+          </a>
+          <a class="nav-item" href="#posture-card">
+            <span class="nav-icon" aria-hidden="true">⌁</span>
+            Posture coach
+          </a>
+          <a class="nav-item" href="#samples-card">
+            <span class="nav-icon" aria-hidden="true">▦</span>
+            My training data
+          </a>
+        </nav>
+
+        <div class="sidebar-note">
+          <span class="note-icon" aria-hidden="true">✳</span>
+          <p>A gentle nudge toward a more comfortable study session.</p>
+          <span class="local-badge"><span></span> PRIVATE &amp; LOCAL</span>
+        </div>
+
+        <div class="sidebar-footer">
+          <span class="avatar">E</span>
+          <span><strong>Your study space</strong><small>Just for you</small></span>
+          <span class="more-dots" aria-hidden="true">···</span>
+        </div>
+      </aside>
+
+      <main id="study" class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb">Your space <span>/</span> <strong>Study room</strong></div>
+          <div class="topbar-right">
+            <span class="privacy-label"><span class="privacy-dot"></span> Processing on this device</span>
+            <button id="sound-toggle" class="icon-button" type="button" aria-pressed="true" title="Toggle posture alert sound">
+              <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1a4 4 0 0 1 0 6m2-9a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1 5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button id="voice-toggle" class="icon-button" type="button" aria-pressed="true" title="Toggle spoken posture suggestions">
+              <svg class="voice-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1a4 4 0 0 1 0 6m2-9a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3.5h4v4m0-4-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="voice-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1 5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <section class="welcome-row">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL STUDY SPACE</div>
+            <h1>Find your <span>focus.</span></h1>
+            <p class="welcome-copy">Settle in, sit comfortably, and let the little things take care of themselves.</p>
+          </div>
+          <div class="date-chip"><span class="date-dot"></span><span id="today-date"></span></div>
+        </section>
+
+        <section class="session-strip" aria-label="Study session summary">
+          <div class="session-stat">
+            <span class="stat-icon stat-clock" aria-hidden="true">◷</span>
+            <span><small>STUDY TIME</small><strong id="study-time">00:00:00</strong></span>
+          </div>
+          <span class="strip-divider"></span>
+          <div class="session-stat">
+            <span class="stat-icon stat-score" aria-hidden="true">✳</span>
+            <span><small>POSTURE SCORE</small><strong><span id="posture-score">--</span><em>/100</em></strong></span>
+          </div>
+          <span class="strip-divider"></span>
+          <div class="session-stat session-status-stat">
+            <span class="stat-icon stat-session" aria-hidden="true"><span id="session-pulse"></span></span>
+            <span><small>SESSION</small><strong id="session-status">Ready when you are</strong></span>
+          </div>
+          <div class="session-strip-spacer"></div>
+          <div class="today-date"><span id="day-name"></span><strong id="calendar-date"></strong></div>
+        </section>
+
+        <section class="content-grid">
+          <article class="card camera-card">
+            <div class="card-heading">
+              <div>
+                <div class="section-kicker"><span class="camera-kicker-dot"></span> LIVE ERGO CHECK</div>
+                <h2>Your study space</h2>
+              </div>
+              <span id="live-badge" class="live-badge"><span></span> CAMERA OFF</span>
+            </div>
+
+            <div id="camera-stage" class="camera-stage">
+              <video id="camera-video" autoplay playsinline muted aria-label="Your webcam preview"></video>
+              <canvas id="frame-canvas" hidden></canvas>
+              <div class="camera-overlay-top">
+                <span class="tracking-pill"><span></span> <span id="tracking-label">Ready to begin</span></span>
+                <span class="camera-time" id="camera-clock">00:00:00</span>
+              </div>
+              <div id="camera-placeholder" class="camera-placeholder">
+                <span class="placeholder-orbit orbit-one"></span>
+                <span class="placeholder-orbit orbit-two"></span>
+                <span class="placeholder-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none"><rect x="6" y="12" width="26" height="24" rx="6" stroke="currentColor" stroke-width="2"/><path d="m32 20 10-6v20l-10-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="19" cy="24" r="5" stroke="currentColor" stroke-width="2"/></svg>
+                </span>
+                <strong>Your camera preview will appear here</strong>
+                <span>Your video is processed locally and never saved.</span>
+              </div>
+              <div id="camera-alert" class="camera-alert" hidden>
+                <span class="alert-wave" aria-hidden="true">⌁</span>
+                <span><strong>A little posture reset?</strong><small>Ease back into your comfortable position.</small></span>
+              </div>
+            </div>
+
+            <div class="camera-controls">
+              <div class="controls-info">
+                <span class="control-shield" aria-hidden="true">◇</span>
+                <span><strong>Private by design</strong><small>Frames are analyzed on this device</small></span>
+              </div>
+              <div class="control-actions">
+                <button id="calibrate-button" class="button button-secondary" type="button" disabled>Recalibrate</button>
+                <button id="start-button" class="button button-primary" type="button">
+                  <span class="button-play" aria-hidden="true">▶</span> Start session
+                </button>
+                <button id="stop-button" class="button button-stop" type="button" hidden>Finish session</button>
+              </div>
+            </div>
+            <div id="app-message" class="app-message" role="status" aria-live="polite"></div>
+          </article>
+
+          <div class="right-column">
+            <article id="posture-card" class="card posture-card">
+              <div class="card-heading posture-heading">
+                <div>
+                  <div class="section-kicker">YOUR POSTURE</div>
+                  <h2>A moment to check in</h2>
+                </div>
+                <span id="posture-icon" class="posture-icon" aria-hidden="true">✳</span>
+              </div>
+
+              <div id="posture-status-card" class="posture-status-card">
+                <div id="status-indicator" class="status-indicator"></div>
+                <div><span id="posture-state">Ready</span><small id="posture-hint">Start a session for your live posture reading.</small></div>
+              </div>
+
+              <div class="reading-row">
+                <div class="reading">
+                  <span class="reading-label">NECK ANGLE</span>
+                  <span class="reading-value"><strong id="neck-angle">--</strong><em>deg</em></span>
+                </div>
+                <span class="reading-divider"></span>
+                <div class="reading">
+                  <span class="reading-label">DISTANCE</span>
+                  <span class="reading-value"><strong id="distance-ratio">--</strong><em>ratio</em></span>
+                </div>
+              </div>
+
+              <div class="standard-block">
+                <div class="standard-top"><span>COMFORTABLE RANGE</span><strong id="standard-label">Waiting for calibration</strong></div>
+                <div class="standard-track"><span id="standard-fill"></span><i></i></div>
+                <div class="standard-foot"><span>Your baseline</span><span>More relaxed <span aria-hidden="true">→</span></span></div>
+              </div>
+              <p class="coach-note"><span aria-hidden="true">✦</span> <span id="coach-message">Sit comfortably and look toward the camera while calibration finds your baseline.</span></p>
+            </article>
+
+            <article id="samples-card" class="card samples-card">
+              <div class="samples-heading">
+                <div><div class="section-kicker">PERSONAL MODEL</div><h2>Teach your posture</h2></div>
+                <span class="sample-spark" aria-hidden="true">✳</span>
+              </div>
+              <p class="samples-copy">Optional: label a few moments to help your personal posture model learn your study setup.</p>
+              <div class="sample-buttons" aria-label="Label current posture">
+                <button class="sample-button sample-good" data-label="Good" type="button" disabled><span>●</span> Good <strong id="count-good">0</strong></button>
+                <button class="sample-button sample-slouch" data-label="Slouching" type="button" disabled><span>●</span> Slouching <strong id="count-slouching">0</strong></button>
+                <button class="sample-button sample-lean" data-label="Leaning" type="button" disabled><span>●</span> Leaning <strong id="count-leaning">0</strong></button>
+              </div>
+              <div id="model-status" class="model-status"><span class="model-status-dot"></span><span>Capture at least 10 of each label across two sessions.</span></div>
+              <button id="train-button" class="train-button" type="button" disabled>Train my posture model <span aria-hidden="true">↗</span></button>
+            </article>
+          </div>
+        </section>
+
+        <footer class="page-footer">
+          <span>Small adjustments. Better study days.</span>
+          <span>ErgoStudy <i>·</i> Your data stays yours</span>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -34,9 +34,14 @@ class SessionSummary:
     total_yawns: int
 
 
-def save_session(summary: SessionSummary, started_at: datetime) -> None:
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with closing(sqlite3.connect(DATABASE_PATH)) as connection:
+def save_session(
+    summary: SessionSummary,
+    started_at: datetime,
+    database_path: Path | None = None,
+) -> None:
+    database_path = database_path or DATABASE_PATH
+    database_path.parent.mkdir(parents=True, exist_ok=True)
+    with closing(sqlite3.connect(database_path)) as connection:
         with connection:
             connection.execute(
                 """
