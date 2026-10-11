@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 opencv-python
-mediapipe
+mediapipe==0.10.21
 numpy
-=======
-opencv-python
-mediapipe
-numpy
->>>>>>> origin/main
+scikit-learn
